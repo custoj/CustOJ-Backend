@@ -59,7 +59,10 @@ do
     sleep 8
 done
 
+addgroup -g 12003 spj
+adduser -u 12000 -S -G spj server
 
-chown -R nobody:nogroup $DATA $APP/dist
-chmod -R 700 $DATA/test_case
+chown -R server:spj $DATA $APP/dist
+find $DATA/test_case -type d -exec chmod 710 {} \;
+find $DATA/test_case -type f -exec chmod 640 {} \;
 exec supervisord -c /app/deploy/supervisord.conf
