@@ -163,7 +163,7 @@ class ACMContestHelper(APIView):
     @check_contest_permission(check_type="ranks")
     def get(self, request):
         ranks = ACMContestRank.objects.filter(contest=self.contest, accepted_number__gt=0) \
-            .values("id", "user__username", "user__userprofile__real_name", "submission_info")
+            .values("id", "user__username", "user__userprofile__real_name", "user__userprofile__mood", "submission_info")
         results = []
         for rank in ranks:
             for problem_id, info in rank["submission_info"].items():
@@ -172,6 +172,7 @@ class ACMContestHelper(APIView):
                         "id": rank["id"],
                         "username": rank["user__username"],
                         "real_name": rank["user__userprofile__real_name"],
+                        "mood": rank["user__userprofile__mood"],
                         "problem_id": problem_id,
                         "ac_info": info,
                         "checked": info.get("checked", False)
