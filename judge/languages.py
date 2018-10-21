@@ -170,6 +170,55 @@ _py3_lang_config = {
     }
 }
 
+_js_lang_config = {
+    "template": """//PREPEND BEGIN
+//PREPEND END
+
+//TEMPLATE BEGIN
+//TEMPLATE END
+
+//APPEND BEGIN
+//APPEND END""",
+    "compile": {
+        "src_name": "solution.js",
+        "exe_name": "solution_e.js",
+        "max_cpu_time": 3000,
+        "max_real_time": 10000,
+        "max_memory": -1,
+        "compile_command": "/bin/cp {src_path} {exe_path}",
+    },
+    "run": {
+        "command": "/usr/bin/nodejs {exe_path}",
+        "seccomp_rule": None,
+        "env": default_env,
+        "memory_limit_check_only": 1
+    }
+}
+
+_bf_lang_config = {
+    "template": """//PREPEND BEGIN
+//PREPEND END
+
+//TEMPLATE BEGIN
+//TEMPLATE END
+
+//APPEND BEGIN
+//APPEND END""",
+    "compile": {
+        "src_name": "solution.bf",
+        "exe_name": "solution_e.bf",
+        "max_cpu_time": 3000,
+        "max_real_time": 10000,
+        "max_memory": 128 * 1024 * 1024,
+        "compile_command": "/bin/cp {src_path} {exe_path}",
+    },
+    "run": {
+        "command": "/usr/bin/brainfuck/brainfuck.py {exe_path}",
+        "seccomp_rule": None,
+        "env": default_env
+    }
+}
+
 languages = [
     {"config": _c_lang_config, "spj": {"compile": _c_lang_spj_compile, "config": _c_lang_spj_config},
      "name": "C", "description": "GCC 5.4", "content_type": "text/x-csrc"},
@@ -178,6 +227,8 @@ languages = [
     {"config": _java_lang_config, "name": "Java", "description": "OpenJDK 1.8", "content_type": "text/x-java"},
     {"config": _py2_lang_config, "name": "Python2", "description": "Python 2.7", "content_type": "text/x-python"},
     {"config": _py3_lang_config, "name": "Python3", "description": "Python 3.5", "content_type": "text/x-python"},
+    {"config": _js_lang_config, "name": "JavaScript", "description": "Node 4.2.6", "content_type": "text/javascript"},
+    {"config": _bf_lang_config, "name": "BrainFuck", "description": "F**K", "content_type": "text/x-brainfuck"}
 ]
 
 spj_languages = list(filter(lambda item: "spj" in item, languages))
