@@ -41,7 +41,7 @@ class ContestAdminSerializer(serializers.ModelSerializer):
 class ContestSerializer(ContestAdminSerializer):
     class Meta:
         model = Contest
-        exclude = ("password", "visible", "allowed_ip_ranges")
+        exclude = ("password", "visible", "allowed_ip_ranges", "similarity_check_result")
 
 
 class ContestAnnouncementSerializer(serializers.ModelSerializer):
