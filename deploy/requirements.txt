@@ -1,6 +1,7 @@
 django==1.11.4
 djangorestframework==3.4.0
 redis==2.10.6
+kombu==4.2.1
 pillow
 otpauth
 flake8-quotes
