@@ -1,6 +1,9 @@
 # OnlineJudge 2.0
 
-定制版QDUOJ,添加了比赛rejudge,代码查重,用户名限制等功能,需要与[前端](https://github.com/ExpMango/OnlineJudgeFE)配合使用.
+定制版QDUOJ,添加了若干功能.
+
+需要和 [前端](https://github.com/HandsomeHow/OnlineJudgeFE), [Judger](https://github.com/HandsomeHow/Judger), [JudgeServer](https://github.com/HandsomeHow/JudgeServer)配合使用,请自行构建镜像,然后将前端编译后的dist文件放到后端/app目录下.
+
 
 # Feature
 
@@ -24,18 +27,26 @@
 
 ![相似度示例][4]
 
+## 格式错误
+
+编辑题目的时候可以选择是否忽略多余的行末空格和多余的换行,若忽略则判题的时候PE会被认为是AC,否则会显示PE.
+
+![编辑界面][5]
+![PE结果][6]
+
 # 功能列表与进度
 
 - [x] 完成contest的rejudge功能
 - [x] 添加contest用户名限制功能(正则检查)
-- [ ] 重写contest rank字段逻辑,更好的支持rejudge功能
 - [ ] 将比赛用户名限制作为单独一个字段,并在前端添加对应位置.
 - [x] contest代码相似查重 
-- [ ] PE(格式错误)
+- [x] PE(格式错误)
 
 
 
-  [1]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/rejudge_in_contest.png
-  [2]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/limit_example.png
-  [3]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/limit_result.png
-  [4]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/similar_check.png
+  [1]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/pics/rejudge_in_contest.png
+  [2]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/pics/limit_example.png
+  [3]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/pics/limit_result.png
+  [4]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/pics/similar_check.png
+  [5]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/pics/pe_edit.png
+  [6]: https://raw.githubusercontent.com/HandsomeHow/OnlineJudge/master/docs/pics/pe_status.png
