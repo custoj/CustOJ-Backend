@@ -256,9 +256,3 @@ languages = [
     {"config": _bf_lang_config, "name": "brainfuck", "description": "F**K", "content_type": "text/x-brainfuck"},
     {"config": _scheme_lang_config, "name": "Scheme", "description": "Chez Scheme 9.5", "content_type": "text/x-scheme"}
 ]
-
-spj_languages = list(filter(lambda item: "spj" in item, languages))
-
-
-language_names = [item["name"] for item in languages]
-spj_language_names = [item["name"] for item in spj_languages]
