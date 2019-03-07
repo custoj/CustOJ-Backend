@@ -219,6 +219,31 @@ _bf_lang_config = {
     }
 }
 
+_scheme_lang_config = {
+    "template": """//PREPEND BEGIN
+//PREPEND END
+
+//TEMPLATE BEGIN
+//TEMPLATE END
+
+//APPEND BEGIN
+//APPEND END""",
+    "compile": {
+        "src_name": "solution.scm",
+        "exe_name": "solution.scm",
+        "max_cpu_time": 3000,
+        "max_real_time": 10000,
+        "max_memory": 128 * 1024 * 1024,
+        "compile_command": "/bin/echo '(compile-file \"{src_path}\")' | /usr/bin/scheme -q",
+       # "compile_command": "/bin/echo $'(make-boot-file \"{exe_path}\" \\'(\"/usr/bin/scheme\")  \"{src_path}\")' | /usr/bin/scheme -q",
+    },
+    "run": {
+        "command": "/usr/bin/scheme --script {exe_path}",
+        "seccomp_rule": "general",
+        "env": default_env
+    }
+}
+
 languages = [
     {"config": _c_lang_config, "spj": {"compile": _c_lang_spj_compile, "config": _c_lang_spj_config},
      "name": "C", "description": "GCC 5.4", "content_type": "text/x-csrc"},
@@ -228,7 +253,8 @@ languages = [
     {"config": _py2_lang_config, "name": "Python2", "description": "Python 2.7", "content_type": "text/x-python"},
     {"config": _py3_lang_config, "name": "Python3", "description": "Python 3.5", "content_type": "text/x-python"},
     {"config": _js_lang_config, "name": "JavaScript", "description": "Node 4.2.6", "content_type": "text/javascript"},
-    {"config": _bf_lang_config, "name": "BrainFuck", "description": "F**K", "content_type": "text/x-brainfuck"}
+    {"config": _bf_lang_config, "name": "brainfuck", "description": "F**K", "content_type": "text/x-brainfuck"},
+    {"config": _scheme_lang_config, "name": "Scheme", "description": "Chez Scheme 9.5", "content_type": "text/x-scheme"}
 ]
 
 spj_languages = list(filter(lambda item: "spj" in item, languages))

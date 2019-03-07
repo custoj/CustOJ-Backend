@@ -97,7 +97,6 @@ def import_users():
             if not email_regex.match(data["email"]):
                 print("%s will not be created due to invalid email: %s" % (data["username"], data["email"]))
                 continue
-            data["username"] = data["username"].lower()
             user, created = User.objects.get_or_create(username=data["username"])
             if not created:
                 print("%s already exists, omitted" % user.username)
