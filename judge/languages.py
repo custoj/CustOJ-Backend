@@ -222,7 +222,7 @@ _bf_lang_config = {
     }
 }
 
-_scheme_lang_config = {
+_kotlin_lang_config = {
     "template": """//PREPEND BEGIN
 //PREPEND END
 
@@ -232,18 +232,45 @@ _scheme_lang_config = {
 //APPEND BEGIN
 //APPEND END""",
     "compile": {
-        "src_name": "solution.scm",
-        "exe_name": "solution.scm",
+        "src_name": "Main.kt",
+        "exe_name": "Main.jar",
         "max_cpu_time": 3000,
-        "max_real_time": 10000,
-        "max_memory": 128 * 1024 * 1024,
-        "compile_command": "/bin/echo '(compile-file \"{src_path}\")' | /usr/bin/scheme -q",
-       # "compile_command": "/bin/echo $'(make-boot-file \"{exe_path}\" \\'(\"/usr/bin/scheme\")  \"{src_path}\")' | /usr/bin/scheme -q",
+        "max_real_time": 5000,
+        "max_memory": -1,
+        "compile_command": "/usr/bin/kotlinc {src_path} -include-runtime -d {exe_dir}"
     },
     "run": {
-        "command": "/usr/bin/scheme --script {exe_path}",
-        "seccomp_rule": "general",
-        "env": default_env
+        "command": "/usr/bin/java -cp {exe_dir} -XX:MaxRAM={max_memory}k -Djava.security.manager -Dfile.encoding=UTF-8 "
+                   "-Djava.security.policy==/etc/java_policy -Djava.awt.headless=true -jar {exe_path}",
+        "seccomp_rule": None,
+        "env": default_env,
+        "memory_limit_check_only": 1
+    }
+}
+
+_scala_lang_config = {
+    "template": """//PREPEND BEGIN
+//PREPEND END
+
+//TEMPLATE BEGIN
+//TEMPLATE END
+
+//APPEND BEGIN
+//APPEND END""",
+    "compile": {
+        "src_name": "Main.scala",
+        "exe_name": "Main",
+        "max_cpu_time": 3000,
+        "max_real_time": 5000,
+        "max_memory": -1,
+        "compile_command": "/usr/bin/scalac {src_path} -d {exe_dir} -encoding UTF8"
+    },
+    "run": {
+        "command": "/usr/bin/java -cp $SCALA_HOME/lib/scala-library.jar:{exe_dir} -XX:MaxRAM={max_memory}k -Djava.security.manager -Dfile.encoding=UTF-8 "
+                   "-Djava.security.policy==/etc/java_policy -Djava.awt.headless=true Main",
+        "seccomp_rule": None,
+        "env": default_env,
+        "memory_limit_check_only": 1
     }
 }
 
@@ -256,6 +283,7 @@ languages = [
     {"config": _py2_lang_config, "name": "Python2", "description": "Python 2.7", "content_type": "text/x-python"},
     {"config": _py3_lang_config, "name": "Python3", "description": "Python 3.5", "content_type": "text/x-python"},
     {"config": _js_lang_config, "name": "JavaScript", "description": "Node 4.2.6", "content_type": "text/javascript"},
-    {"config": _bf_lang_config, "name": "brainfuck", "description": "F**K", "content_type": "text/x-brainfuck"},
-    {"config": _scheme_lang_config, "name": "Scheme", "description": "Chez Scheme 9.5", "content_type": "text/x-scheme"}
+    {"config": _kotlin_lang_config, "name": "Kotlin", "description": "Kotlin 1.3.50", "content_type": "text/x-kotlin"},
+    {"config": _scala_lang_config, "name": "Scala", "description": "Scala 2.13.0", "content_type": "text/x-scala"},
+    {"config": _bf_lang_config, "name": "brainfuck", "description": "An interesting language", "content_type": "text/x-brainfuck"}
 ]
