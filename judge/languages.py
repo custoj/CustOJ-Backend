@@ -191,7 +191,7 @@ _js_lang_config = {
         "compile_command": "/bin/cp {src_path} {exe_path}",
     },
     "run": {
-        "command": "/usr/bin/nodejs {exe_path}",
+        "command": "/usr/bin/node {exe_path}",
         "seccomp_rule": None,
         "env": default_env,
         "memory_limit_check_only": 1
@@ -237,7 +237,7 @@ _kotlin_lang_config = {
         "max_cpu_time": 3000,
         "max_real_time": 5000,
         "max_memory": -1,
-        "compile_command": "/usr/bin/kotlinc {src_path} -include-runtime -d {exe_dir}"
+        "compile_command": "/usr/bin/kotlinc {src_path} -include-runtime -d {exe_path}"
     },
     "run": {
         "command": "/usr/bin/java -cp {exe_dir} -XX:MaxRAM={max_memory}k -Djava.security.manager -Dfile.encoding=UTF-8 "
@@ -282,7 +282,7 @@ languages = [
     {"config": _java_lang_config, "name": "Java", "description": "OpenJDK 1.8", "content_type": "text/x-java"},
     {"config": _py2_lang_config, "name": "Python2", "description": "Python 2.7", "content_type": "text/x-python"},
     {"config": _py3_lang_config, "name": "Python3", "description": "Python 3.5", "content_type": "text/x-python"},
-    {"config": _js_lang_config, "name": "JavaScript", "description": "Node 4.2.6", "content_type": "text/javascript"},
+    {"config": _js_lang_config, "name": "JavaScript", "description": "Node 8.16.1", "content_type": "text/javascript"},
     {"config": _kotlin_lang_config, "name": "Kotlin", "description": "Kotlin 1.3.50", "content_type": "text/x-kotlin"},
     {"config": _scala_lang_config, "name": "Scala", "description": "Scala 2.13.0", "content_type": "text/x-scala"},
     {"config": _bf_lang_config, "name": "brainfuck", "description": "An interesting language", "content_type": "text/x-brainfuck"}
