@@ -234,13 +234,13 @@ _kotlin_lang_config = {
     "compile": {
         "src_name": "Main.kt",
         "exe_name": "Main",
-        "max_cpu_time": 5000,
-        "max_real_time": 15000,
+        "max_cpu_time": 10000,
+        "max_real_time": 30000,
         "max_memory": -1,
         "compile_command": "/usr/bin/kotlinc {src_path} -d {exe_dir}"
     },
     "run": {
-        "command": "/usr/bin/java -cp {exe_dir} -XX:MaxRAM={max_memory}k -Djava.security.manager -Dfile.encoding=UTF-8 "
+        "command": "/usr/bin/java -cp /usr/lib/kotlin/*:{exe_dir} -XX:MaxRAM={max_memory}k -Djava.security.manager -Dfile.encoding=UTF-8 "
                    "-Djava.security.policy==/etc/java_policy -Djava.awt.headless=true MainKt",
         "seccomp_rule": None,
         "env": default_env,
@@ -266,7 +266,7 @@ _scala_lang_config = {
         "compile_command": "/usr/bin/scalac {src_path} -d {exe_dir} -encoding UTF8"
     },
     "run": {
-        "command": "/usr/bin/java -cp /usr/lib/scala-library.jar:{exe_dir} -XX:MaxRAM={max_memory}k -Djava.security.manager -Dfile.encoding=UTF-8 "
+        "command": "/usr/bin/java -cp /usr/lib/scala/scala-library.jar:{exe_dir} -XX:MaxRAM={max_memory}k -Djava.security.manager -Dfile.encoding=UTF-8 "
                    "-Djava.security.policy==/etc/java_policy -Djava.awt.headless=true Main",
         "seccomp_rule": None,
         "env": default_env,
