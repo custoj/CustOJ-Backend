@@ -260,8 +260,8 @@ _scala_lang_config = {
     "compile": {
         "src_name": "Main.scala",
         "exe_name": "Main",
-        "max_cpu_time": 5000,
-        "max_real_time": 15000,
+        "max_cpu_time": 10000,
+        "max_real_time": 30000,
         "max_memory": -1,
         "compile_command": "/usr/bin/scalac {src_path} -d {exe_dir} -encoding UTF8"
     },
