@@ -54,6 +54,7 @@ class Problem(models.Model):
     languages = JSONField()
     template = JSONField()
     create_time = models.DateTimeField(auto_now_add=True)
+    pe_ignored = models.BooleanField(default=False)
     # we can not use auto_now here
     last_update_time = models.DateTimeField(null=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -85,7 +86,7 @@ class Problem(models.Model):
     class Meta:
         db_table = "problem"
         unique_together = (("_id", "contest"),)
-        ordering = ("create_time",)
+        ordering = ("_id",)
 
     def add_submission_number(self):
         self.submission_number = models.F("submission_number") + 1

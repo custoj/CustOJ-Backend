@@ -93,7 +93,7 @@ class JudgeDispatcher(DispatcherBase):
         super().__init__()
         self.submission = Submission.objects.get(id=submission_id)
         self.contest_id = self.submission.contest_id
-        self.last_result = self.submission.result if self.submission.info else None
+        self.last_result = self.submission.result
 
         if self.contest_id:
             self.problem = Problem.objects.select_related("contest").get(id=problem_id, contest_id=self.contest_id)
@@ -176,6 +176,10 @@ class JudgeDispatcher(DispatcherBase):
             resp["data"].sort(key=lambda x: int(x["test_case"]))
             self.submission.info = resp
             self._compute_statistic_info(resp["data"])
+            if self.problem.pe_ignored:
+                for case in resp["data"]:
+                    if case["result"] is JudgeStatus.PRESNTATION_ERROR:
+                        case["result"] = 0
             error_test_case = list(filter(lambda case: case["result"] != 0, resp["data"]))
             # ACM模式下,多个测试点全部正确则AC，否则取第一个错误的测试点的状态
             # OI模式下, 若多个测试点全部正确则AC， 若全部错误则取第一个错误测试点状态，否则为部分正确
@@ -188,7 +192,7 @@ class JudgeDispatcher(DispatcherBase):
         self.submission.save()
 
         if self.contest_id:
-            if self.contest.status != ContestStatus.CONTEST_UNDERWAY or \
+            if self.submission.create_time > self.contest.end_time or \
                     User.objects.get(id=self.submission.user_id).is_contest_admin(self.contest):
                 logger.info(
                     "Contest debug mode, id: " + str(self.contest_id) + ", submission id: " + self.submission.id)
@@ -197,7 +201,7 @@ class JudgeDispatcher(DispatcherBase):
                 self.update_contest_problem_status()
                 self.update_contest_rank()
         else:
-            if self.last_result:
+            if self.last_result != JudgeStatus.PENDING and self.last_result != JudgeStatus.JUDGING:
                 self.update_problem_status_rejudge()
             else:
                 self.update_problem_status()
@@ -211,7 +215,9 @@ class JudgeDispatcher(DispatcherBase):
         with transaction.atomic():
             # update problem status
             problem = Problem.objects.select_for_update().get(contest_id=self.contest_id, id=self.problem.id)
-            if self.last_result != JudgeStatus.ACCEPTED and self.submission.result == JudgeStatus.ACCEPTED:
+            if self.last_result == JudgeStatus.ACCEPTED:
+                problem.accepted_number -= 1
+            if self.submission.result == JudgeStatus.ACCEPTED:
                 problem.accepted_number += 1
             problem_info = problem.statistic_info
             problem_info[self.last_result] = problem_info.get(self.last_result, 1) - 1

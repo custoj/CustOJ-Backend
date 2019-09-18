@@ -41,7 +41,7 @@ class ContestAdminSerializer(serializers.ModelSerializer):
 class ContestSerializer(ContestAdminSerializer):
     class Meta:
         model = Contest
-        exclude = ("password", "visible", "allowed_ip_ranges")
+        exclude = ("password", "visible", "allowed_ip_ranges", "similarity_check_result")
 
 
 class ContestAnnouncementSerializer(serializers.ModelSerializer):
@@ -73,6 +73,7 @@ class ContestPasswordVerifySerializer(serializers.Serializer):
 
 class ACMContestRankSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+    rank = serializers.SerializerMethodField()
 
     class Meta:
         model = ACMContestRank
@@ -85,9 +86,13 @@ class ACMContestRankSerializer(serializers.ModelSerializer):
     def get_user(self, obj):
         return UsernameSerializer(obj.user, need_real_name=True or self.is_contest_admin, need_school=True or self.is_contest_admin).data
 
+    def get_rank(self, obj):
+        return obj.rank
+
 
 class OIContestRankSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+    rank = serializers.SerializerMethodField()
 
     class Meta:
         model = OIContestRank
@@ -100,9 +105,18 @@ class OIContestRankSerializer(serializers.ModelSerializer):
     def get_user(self, obj):
         return UsernameSerializer(obj.user, need_real_name=True or self.is_contest_admin, need_school=True or self.is_contest_admin).data
 
+    def get_rank(self, obj):
+        return obj.rank
+
 
 class ACMContesHelperSerializer(serializers.Serializer):
     contest_id = serializers.IntegerField()
     problem_id = serializers.CharField()
     rank_id = serializers.IntegerField()
     checked = serializers.BooleanField()
+
+
+class ContestSimilarResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contest
+        fields = ["similarity_check_result"]

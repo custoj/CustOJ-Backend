@@ -17,6 +17,7 @@ from ..models import ContestAnnouncement, Contest, OIContestRank, ACMContestRank
 from ..serializers import ContestAnnouncementSerializer
 from ..serializers import ContestSerializer, ContestPasswordVerifySerializer
 from ..serializers import OIContestRankSerializer, ACMContestRankSerializer
+from ..serializers import ContestSimilarResultSerializer
 
 
 class ContestAnnouncementListAPI(APIView):
@@ -98,6 +99,15 @@ class ContestAccessAPI(APIView):
 
 
 class ContestRankAPI(APIView):
+    def realrank_filter(self, qs):
+        rank_cnt = 1
+        for t in qs:
+            if t.user.username[0] == "*":
+                t.rank = "*"
+            else:
+                t.rank = rank_cnt
+                rank_cnt = rank_cnt + 1
+
     def get_rank(self):
         if self.contest.rule_type == ContestRuleType.ACM:
             return ACMContestRank.objects.filter(contest=self.contest,
@@ -182,6 +192,14 @@ class ContestRankAPI(APIView):
             response["Content-Type"] = "application/xlsx"
             return response
 
+        self.realrank_filter(qs)
         page_qs = self.paginate_data(request, qs)
         page_qs["results"] = serializer(page_qs["results"], many=True, is_contest_admin=is_contest_admin).data
         return self.success(page_qs)
+
+
+class ContestGetSimilarAPI(APIView):
+    def get(self, request):
+        contest_id = request.GET.get("contest_id")
+        contest = Contest.objects.get(id=contest_id, visible=True)
+        return self.success(ContestSimilarResultSerializer(contest).data)
