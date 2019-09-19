@@ -119,7 +119,7 @@ class ContestProblemAPI(APIView):
             contest_problems = Problem.objects.select_related("created_by").filter(contest=self.contest)
             for problem in contest_problems:
                 if not problem.visible:
-                    problem.title = problem.title + " ( HIDEN )"
+                    problem.title = problem.title + " (Invisible)"
         else:
             contest_problems = Problem.objects.select_related("created_by").filter(contest=self.contest, visible=True)
         if self.contest.problem_details_permission(request.user):
