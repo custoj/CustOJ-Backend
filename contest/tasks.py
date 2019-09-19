@@ -1,14 +1,17 @@
 import dramatiq
 
 from account.models import User
-from submission.models import JudgeStatus
+from submission.models import Submission, JudgeStatus
+from problem.models import Problem
 from judge.dispatcher import JudgeDispatcher
 from contest.models import Contest, ContestRuleType, OIContestRank, ACMContestRank
 from utils.shortcuts import DRAMATIQ_WORKER_ARGS
 
 
 @dramatiq.actor(**DRAMATIQ_WORKER_ARGS(max_retries=3))
-def contest_rejudge_task(cid, pid, submissions, problem):
+def contest_rejudge_task(cid, pid):
+    problem = Problem.objects.get(id=pid)
+    submissions = Submission.objects.filter(problem_id=pid).order_by("create_time")
     ce_cnt = dict()
     for submission in submissions:
         if submission.result == JudgeStatus.COMPILE_ERROR:

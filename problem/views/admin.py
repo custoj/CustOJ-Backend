@@ -712,7 +712,7 @@ class ProblemRejudgeAPI(APIView):
         cid = request.GET.get("contest_id")
         pid = request.GET.get("problem_id")
         if not pid:
-            return self.error("Parameter error, id is required")
+            return self.error("Error: Problem id required")
         if cid:
             try:
                 problem = Problem.objects.get(_id=pid, contest_id=cid)
@@ -726,13 +726,13 @@ class ProblemRejudgeAPI(APIView):
             except Problem.DoesNotExist:
                 return self.error("Problem doesn't exist")
         if problem.visible:
-                return self.error("Problem should be invisiable")
+                return self.error("Problem should be invisible")
         try:
-            submissions = Submission.objects.filter(problem_id=pid).order_by("create_time").order_by("create_time")
+            submissions = Submission.objects.filter(problem_id=pid).order_by("create_time")
         except Submission.DoesNotExist:
             return self.error("No submission for this problem")
         for submission in submissions:
             if submission.result == JudgeStatus.PENDING or submission.result == JudgeStatus.JUDGING:
-                return self.error("Judgeing or pending submissions left")
-        contest_rejudge_task.send(cid, pid, submissions, problem)
+                return self.error("Judging or pending submissions left")
+        contest_rejudge_task.send(cid, pid)
         return self.success()
