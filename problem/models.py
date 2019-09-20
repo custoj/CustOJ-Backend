@@ -86,7 +86,7 @@ class Problem(models.Model):
     class Meta:
         db_table = "problem"
         unique_together = (("_id", "contest"),)
-        ordering = ("_id",)
+        ordering = ("create_time",)
 
     def add_submission_number(self):
         self.submission_number = models.F("submission_number") + 1
