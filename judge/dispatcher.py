@@ -411,3 +411,33 @@ class JudgeDispatcher(DispatcherBase):
             rank.total_score = rank.total_score + current_score
         rank.submission_info[problem_id] = current_score
         rank.save()
+
+class DebugDispatcher(DispatcherBase):
+    def __init__(self, language, code, test_case):
+        super().__init__()
+        self.language = language
+        self.code = code
+        self.test_case = test_case
+    
+    def debug(self):
+        if not self.test_case:
+            return "Null Stdin"
+        language = self.language
+        sub_config = list(filter(lambda item: language == item["name"], SysOptions.languages))[0]
+        time_limit = 6000
+        if language in ['C','C++']:
+            time_limit = 2000
+        data = {
+            "language_config": sub_config["config"],
+            "src": self.code,
+            "max_cpu_time": time_limit,
+            "max_memory": 1024 * 1024 * 512,
+            "test_case": self.test_case,
+            "output": True
+        }
+
+        with ChooseJudgeServer() as server:
+            if not server:
+                cache.lpush(CacheKey.waiting_queue, json.dumps(data))
+                return
+            return self._request(urljoin(server.service_url, "/judge"), data=data)

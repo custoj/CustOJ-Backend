@@ -3,6 +3,7 @@ import ipaddress
 from account.decorators import login_required, check_contest_permission
 from contest.models import ContestStatus, ContestRuleType
 from judge.tasks import judge_task
+from judge.dispatcher import DebugDispatcher
 from options.options import SysOptions
 # from judge.dispatcher import JudgeDispatcher
 from problem.models import Problem, ProblemRuleType
@@ -124,6 +125,19 @@ class SubmissionAPI(APIView):
         submission.save(update_fields=["shared"])
         return self.success()
 
+class DebugSubmissionAPI(APIView):
+    def post(self, request):
+        data = request.data
+        language=data["language"]
+        code=data["src"]
+        test_case = [{
+            "input": data["stdin"],
+            "output": ""
+        }]
+        return self.success(DebugDispatcher(language, code, test_case).debug())
+
+    def get(self, request):
+        return self.success()
 
 class SubmissionListAPI(APIView):
     def get(self, request):
