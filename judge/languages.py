@@ -26,7 +26,7 @@ int main() {
         "exe_name": "main",
         "max_cpu_time": 3000,
         "max_real_time": 10000,
-        "max_memory": 256 * 1024 * 1024,
+        "max_memory": 512 * 1024 * 1024,
         "compile_command": "/usr/bin/gcc -DONLINE_JUDGE -O2 -w -fmax-errors=3 -std=c11 {src_path} -lm -o {exe_path}",
     },
     "run": {
@@ -41,7 +41,7 @@ _c_lang_spj_compile = {
     "exe_name": "spj-{spj_version}",
     "max_cpu_time": 3000,
     "max_real_time": 10000,
-    "max_memory": 1024 * 1024 * 1024,
+    "max_memory": 512 * 1024 * 1024,
     "compile_command": "/usr/bin/gcc -DONLINE_JUDGE -O2 -w -fmax-errors=3 -std=c11 {src_path} -lm -o {exe_path}"
 }
 
@@ -138,9 +138,9 @@ _py2_lang_config = {
     "compile": {
         "src_name": "solution.py",
         "exe_name": "solution.pyc",
-        "max_cpu_time": 3000,
+        "max_cpu_time": 5000,
         "max_real_time": 10000,
-        "max_memory": 128 * 1024 * 1024,
+        "max_memory": 256 * 1024 * 1024,
         "compile_command": "/usr/bin/python -m py_compile {src_path}",
     },
     "run": {
@@ -161,9 +161,9 @@ _py3_lang_config = {
     "compile": {
         "src_name": "solution.py",
         "exe_name": "__pycache__/solution.cpython-35.pyc",
-        "max_cpu_time": 3000,
+        "max_cpu_time": 5000,
         "max_real_time": 10000,
-        "max_memory": 128 * 1024 * 1024,
+        "max_memory": 256 * 1024 * 1024,
         "compile_command": "/usr/bin/python3 -m py_compile {src_path}",
     },
     "run": {
@@ -185,7 +185,7 @@ _js_lang_config = {
     "compile": {
         "src_name": "solution.js",
         "exe_name": "solution_e.js",
-        "max_cpu_time": 3000,
+        "max_cpu_time": 5000,
         "max_real_time": 10000,
         "max_memory": -1,
         "compile_command": "/bin/cp {src_path} {exe_path}",
@@ -210,7 +210,7 @@ _bf_lang_config = {
     "compile": {
         "src_name": "solution.bf",
         "exe_name": "solution_e.bf",
-        "max_cpu_time": 3000,
+        "max_cpu_time": 5000,
         "max_real_time": 10000,
         "max_memory": 128 * 1024 * 1024,
         "compile_command": "/bin/cp {src_path} {exe_path}",
@@ -234,7 +234,7 @@ _kotlin_lang_config = {
     "compile": {
         "src_name": "Main.kt",
         "exe_name": "Main",
-        "max_cpu_time": 10000,
+        "max_cpu_time": 15000,
         "max_real_time": 30000,
         "max_memory": -1,
         "compile_command": "/usr/bin/kotlinc {src_path} -d {exe_dir}"
@@ -260,7 +260,7 @@ _scala_lang_config = {
     "compile": {
         "src_name": "Main.scala",
         "exe_name": "Main",
-        "max_cpu_time": 10000,
+        "max_cpu_time": 15000,
         "max_real_time": 30000,
         "max_memory": -1,
         "compile_command": "/usr/bin/scalac {src_path} -d {exe_dir} -encoding UTF8"
