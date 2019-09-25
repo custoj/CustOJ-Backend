@@ -424,13 +424,13 @@ class DebugDispatcher(DispatcherBase):
             return "Null Stdin"
         language = self.language
         sub_config = list(filter(lambda item: language == item["name"], SysOptions.languages))[0]
-        time_limit = 6000
+        time_limit = 9000
         if language in ['C','C++']:
-            time_limit = 2000
+            time_limit = 3000
         data = {
             "language_config": sub_config["config"],
             "src": self.code,
-            "max_cpu_time": time_limit,
+            "max_real_time": time_limit,
             "max_memory": 1024 * 1024 * 512,
             "test_case": self.test_case,
             "output": True
