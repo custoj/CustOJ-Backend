@@ -139,7 +139,7 @@ class JudgeDispatcher(DispatcherBase):
             code = self.submission.code
 
         time_mul = 3
-        if language in ['C', 'C++']:
+        if language in ["C", "C++"]:
             time_mul = 1
 
         data = {
@@ -426,7 +426,7 @@ class DebugDispatcher(DispatcherBase):
         language = self.language
         sub_config = list(filter(lambda item: language == item["name"], SysOptions.languages))[0]
         time_limit = 9000
-        if language in ['C', 'C++']:
+        if language in ["C", "C++"]:
             time_limit = 3000
         data = {
             "language_config": sub_config["config"],
