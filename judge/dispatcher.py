@@ -9,7 +9,7 @@ from django.db.models import F
 
 from account.models import User
 from conf.models import JudgeServer
-from contest.models import ContestRuleType, ACMContestRank, OIContestRank, ContestStatus
+from contest.models import ContestRuleType, ACMContestRank, OIContestRank
 from options.options import SysOptions
 from problem.models import Problem, ProblemRuleType
 from problem.utils import parse_problem_template
@@ -139,7 +139,7 @@ class JudgeDispatcher(DispatcherBase):
             code = self.submission.code
 
         time_mul = 3
-        if language in ['C','C++']:
+        if language in ['C', 'C++']:
             time_mul = 1
 
         data = {
@@ -412,20 +412,21 @@ class JudgeDispatcher(DispatcherBase):
         rank.submission_info[problem_id] = current_score
         rank.save()
 
+
 class DebugDispatcher(DispatcherBase):
     def __init__(self, language, code, test_case):
         super().__init__()
         self.language = language
         self.code = code
         self.test_case = test_case
-    
+
     def debug(self):
         if not self.test_case:
             return "Null Stdin"
         language = self.language
         sub_config = list(filter(lambda item: language == item["name"], SysOptions.languages))[0]
         time_limit = 9000
-        if language in ['C','C++']:
+        if language in ['C', 'C++']:
             time_limit = 3000
         data = {
             "language_config": sub_config["config"],

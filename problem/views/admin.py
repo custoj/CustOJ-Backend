@@ -1,7 +1,7 @@
 import hashlib
 import json
 import os
-import shutil
+# import shutil
 import tempfile
 import zipfile
 from wsgiref.util import FileWrapper
@@ -726,7 +726,7 @@ class ProblemRejudgeAPI(APIView):
             except Problem.DoesNotExist:
                 return self.error("Problem doesn't exist")
         if problem.visible:
-                return self.error("Problem should be invisible")
+            return self.error("Problem should be invisible")
         try:
             submissions = Submission.objects.filter(problem_id=pid).order_by("create_time")
         except Submission.DoesNotExist:

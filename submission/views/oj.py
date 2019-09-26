@@ -125,11 +125,12 @@ class SubmissionAPI(APIView):
         submission.save(update_fields=["shared"])
         return self.success()
 
+
 class DebugSubmissionAPI(APIView):
     def post(self, request):
         data = request.data
-        language=data["language"]
-        code=data["src"]
+        language = data["language"]
+        code = data["src"]
         test_case = [{
             "input": data["stdin"],
             "output": ""
@@ -138,6 +139,7 @@ class DebugSubmissionAPI(APIView):
 
     def get(self, request):
         return self.success()
+
 
 class SubmissionListAPI(APIView):
     def get(self, request):

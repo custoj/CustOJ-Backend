@@ -37,7 +37,10 @@ class UserAdminAPI(APIView):
         try:
             with transaction.atomic():
                 ret = User.objects.bulk_create(user_list)
-                UserProfile.objects.bulk_create([UserProfile(user=user,real_name=user_profile_list[user.username][0],school=user_profile_list[user.username][1],mood=user_profile_list[user.username][2]) for user in ret])
+                UserProfile.objects.bulk_create([UserProfile(user=user,
+                                                            real_name=user_profile_list[user.username][0],
+                                                            school=user_profile_list[user.username][1],
+                                                            mood=user_profile_list[user.username][2]) for user in ret])
             return self.success()
         except IntegrityError as e:
             # Extract detail from exception message

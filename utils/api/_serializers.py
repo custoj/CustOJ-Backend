@@ -6,7 +6,7 @@ class UsernameSerializer(serializers.Serializer):
     username = serializers.CharField()
     real_name = serializers.SerializerMethodField()
     school = serializers.SerializerMethodField()
-    
+
     def __init__(self, *args, **kwargs):
         self.need_school = kwargs.pop("need_school", False)
         self.need_real_name = kwargs.pop("need_real_name", False)
