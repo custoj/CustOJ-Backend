@@ -107,8 +107,8 @@ class ContestRankAPI(APIView):
     def realrank_filter(self, qs):
         rank_cnt = 1
         for t in qs:
-            if t.user.username[0] == "*":
-                t.rank = "*"
+            if t.user.userprofile.real_name[0] == "*":
+                t.rank = "-"
             else:
                 t.rank = rank_cnt
                 rank_cnt = rank_cnt + 1
@@ -152,6 +152,7 @@ class ContestRankAPI(APIView):
                 cache.set(cache_key, qs)
 
         if download_csv:
+            self.realrank_filter(qs)
             data = serializer(qs, many=True, is_contest_admin=is_contest_admin).data
             contest_problems = Problem.objects.filter(contest=self.contest, visible=True).order_by("_id")
             problem_ids = [item.id for item in contest_problems]
@@ -159,36 +160,39 @@ class ContestRankAPI(APIView):
             f = io.BytesIO()
             workbook = xlsxwriter.Workbook(f)
             worksheet = workbook.add_worksheet()
-            worksheet.write("A1", "User ID")
-            worksheet.write("B1", "Username")
-            worksheet.write("C1", "Real Name")
+            worksheet.write("A1", "Rank")
+            worksheet.write("B1", "User ID")
+            worksheet.write("C1", "Username")
+            worksheet.write("D1", "Real Name")
             if self.contest.rule_type == ContestRuleType.OI:
-                worksheet.write("D1", "Total Score")
+                worksheet.write("E1", "Total Score")
                 for item in range(contest_problems.count()):
                     worksheet.write(self.column_string(5 + item) + "1", f"{contest_problems[item].title}")
                 for index, item in enumerate(data):
-                    worksheet.write_string(index + 1, 0, str(item["user"]["id"]))
-                    worksheet.write_string(index + 1, 1, item["user"]["username"])
-                    worksheet.write_string(index + 1, 2, item["user"]["real_name"] or "")
-                    worksheet.write_string(index + 1, 3, str(item["total_score"]))
+                    worksheet.write_string(index + 1, 0, item["rank"])
+                    worksheet.write_string(index + 1, 1, str(item["user"]["id"]))
+                    worksheet.write_string(index + 1, 2, item["user"]["username"])
+                    worksheet.write_string(index + 1, 3, item["user"]["real_name"] or "")
+                    worksheet.write_string(index + 1, 4, str(item["total_score"]))
                     for k, v in item["submission_info"].items():
-                        worksheet.write_string(index + 1, 4 + problem_ids.index(int(k)), str(v))
+                        worksheet.write_string(index + 1, 5 + problem_ids.index(int(k)), str(v))
             else:
-                worksheet.write("D1", "AC")
-                worksheet.write("E1", "Total Submission")
-                worksheet.write("F1", "Total Time")
+                worksheet.write("E1", "AC")
+                worksheet.write("F1", "Total Submission")
+                worksheet.write("G1", "Total Time")
                 for item in range(contest_problems.count()):
                     worksheet.write(self.column_string(7 + item) + "1", f"{contest_problems[item].title}")
 
                 for index, item in enumerate(data):
-                    worksheet.write_string(index + 1, 0, str(item["user"]["id"]))
-                    worksheet.write_string(index + 1, 1, item["user"]["username"])
-                    worksheet.write_string(index + 1, 2, item["user"]["real_name"] or "")
-                    worksheet.write_string(index + 1, 3, str(item["accepted_number"]))
-                    worksheet.write_string(index + 1, 4, str(item["submission_number"]))
-                    worksheet.write_string(index + 1, 5, str(item["total_time"]))
+                    worksheet.write_string(index + 1, 0, item["rank"])
+                    worksheet.write_string(index + 1, 1, str(item["user"]["id"]))
+                    worksheet.write_string(index + 1, 2, item["user"]["username"])
+                    worksheet.write_string(index + 1, 3, item["user"]["real_name"] or "")
+                    worksheet.write_string(index + 1, 4, str(item["accepted_number"]))
+                    worksheet.write_string(index + 1, 5, str(item["submission_number"]))
+                    worksheet.write_string(index + 1, 6, str(item["total_time"]))
                     for k, v in item["submission_info"].items():
-                        worksheet.write_string(index + 1, 6 + problem_ids.index(int(k)), str(v["is_ac"]))
+                        worksheet.write_string(index + 1, 7 + problem_ids.index(int(k)), str(v["is_ac"]))
 
             workbook.close()
             f.seek(0)
