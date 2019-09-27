@@ -110,7 +110,7 @@ class ContestRankAPI(APIView):
             if t.user.userprofile.real_name[0] == "*":
                 t.rank = "-"
             else:
-                t.rank = rank_cnt
+                t.rank = str(rank_cnt)
                 rank_cnt = rank_cnt + 1
 
     def get_rank(self):
