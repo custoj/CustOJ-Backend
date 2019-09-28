@@ -431,7 +431,7 @@ class DebugDispatcher(DispatcherBase):
         data = {
             "language_config": sub_config["config"],
             "src": self.code,
-            "max_real_time": time_limit,
+            "max_cpu_time": time_limit,
             "max_memory": 1024 * 1024 * 512,
             "test_case": self.test_case,
             "output": True
