@@ -107,7 +107,7 @@ class ContestRankAPI(APIView):
     def realrank_filter(self, qs):
         rank_cnt = 1
         for t in qs:
-            if t.user.userprofile.real_name[0] == "*":
+            if t.user.userprofile.real_name.startswith("*"):
                 t.rank = "-"
             else:
                 t.rank = str(rank_cnt)
