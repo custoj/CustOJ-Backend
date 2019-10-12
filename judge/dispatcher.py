@@ -373,7 +373,8 @@ class JudgeDispatcher(DispatcherBase):
         else:
             info = {"is_ac": False, "ac_time": 0, "error_number": 0, "is_first_ac": False}
 
-        rank.submission_number += 1
+        if not problem.title.startswith("*"):
+            rank.submission_number += 1
         if self.submission.result == JudgeStatus.ACCEPTED:
             info["is_ac"] = True
             info["ac_time"] = (self.submission.create_time - self.contest.start_time).total_seconds()
