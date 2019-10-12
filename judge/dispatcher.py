@@ -370,34 +370,22 @@ class JudgeDispatcher(DispatcherBase):
         if info:
             if info["is_ac"]:
                 return
+        else:
+            info = {"is_ac": False, "ac_time": 0, "error_number": 0, "is_first_ac": False}
 
-            rank.submission_number += 1
-            if self.submission.result == JudgeStatus.ACCEPTED:
+        rank.submission_number += 1
+        if self.submission.result == JudgeStatus.ACCEPTED:
+            info["is_ac"] = True
+            info["ac_time"] = (self.submission.create_time - self.contest.start_time).total_seconds()
+            if not problem.title.startswith("*"):
                 rank.accepted_number += 1
-                info["is_ac"] = True
-                info["ac_time"] = (self.submission.create_time - self.contest.start_time).total_seconds()
                 rank.total_time += info["ac_time"] + info["error_number"] * 20 * 60
 
-                if problem.accepted_number == 1:
-                    info["is_first_ac"] = True
-            elif self.submission.result != JudgeStatus.COMPILE_ERROR:
-                info["error_number"] += 1
+            if problem.accepted_number == 1:
+                info["is_first_ac"] = True
+        elif self.submission.result != JudgeStatus.COMPILE_ERROR:
+            info["error_number"] += 1
 
-        # 第一次提交
-        else:
-            rank.submission_number += 1
-            info = {"is_ac": False, "ac_time": 0, "error_number": 0, "is_first_ac": False}
-            if self.submission.result == JudgeStatus.ACCEPTED:
-                rank.accepted_number += 1
-                info["is_ac"] = True
-                info["ac_time"] = (self.submission.create_time - self.contest.start_time).total_seconds()
-                rank.total_time += info["ac_time"]
-
-                if problem.accepted_number == 1:
-                    info["is_first_ac"] = True
-
-            elif self.submission.result != JudgeStatus.COMPILE_ERROR:
-                info["error_number"] = 1
         rank.submission_info[str(self.submission.problem_id)] = info
         rank.save()
 
