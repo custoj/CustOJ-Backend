@@ -32,15 +32,16 @@ def contest_rejudge_task(cid, pid):
                         user = User.objects.get(id=rank.user_id)
                         user.userprofile.acm_problems_status["contest_problems"].pop(str(pid))
                         user.userprofile.save()
-                        rank.submission_number -= problem_info["error_number"]
-                        if rank.user_id in ce_cnt:
-                            rank.submission_number -= ce_cnt[rank.user_id]
-                            ce_cnt.pop(rank.user_id)
-                        if problem_info["is_ac"]:
-                            rank.submission_number -= 1
-                            rank.accepted_number -= 1
-                            rank.total_time = rank.total_time - problem_info["error_number"] * 20 * 60
-                            rank.total_time = rank.total_time - int(problem_info["ac_time"])
+                        if not problem.title.startswith("*"):
+                            rank.submission_number -= problem_info["error_number"]
+                            if rank.user_id in ce_cnt:
+                                rank.submission_number -= ce_cnt[rank.user_id]
+                                ce_cnt.pop(rank.user_id)
+                            if problem_info["is_ac"]:
+                                rank.submission_number -= 1
+                                rank.accepted_number -= 1
+                                rank.total_time = rank.total_time - problem_info["error_number"] * 20 * 60
+                                rank.total_time = rank.total_time - int(problem_info["ac_time"])
                         rank.submission_info.pop(str(pid))
                         rank.save()
         else:
