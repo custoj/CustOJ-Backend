@@ -263,7 +263,7 @@ _scala_lang_config = {
         "max_cpu_time": 15000,
         "max_real_time": 30000,
         "max_memory": -1,
-        "compile_command": "/usr/bin/scalac {src_path} -d {exe_dir} -encoding UTF8"
+        "compile_command": "/usr/bin/scalac {src_path} -d {exe_dir} -encoding UTF8 -language:postfixOps"
     },
     "run": {
         "command": "/usr/bin/java -cp /usr/lib/scala/scala-library.jar:{exe_dir} -XX:MaxRAM={max_memory}k -Djava.security.manager -Dfile.encoding=UTF-8 "
