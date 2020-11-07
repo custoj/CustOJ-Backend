@@ -210,7 +210,7 @@ _kotlin_lang_config = {
     "compile": {
         "src_name": "Main.kt",
         "exe_name": "Main",
-        "max_cpu_time": 15000,
+        "max_cpu_time": -1,
         "max_real_time": 30000,
         "max_memory": -1,
         "compile_command": "/usr/bin/kotlinc {src_path} -d {exe_dir}"
@@ -236,7 +236,7 @@ _scala_lang_config = {
     "compile": {
         "src_name": "Main.scala",
         "exe_name": "Main",
-        "max_cpu_time": 15000,
+        "max_cpu_time": -1,
         "max_real_time": 30000,
         "max_memory": -1,
         "compile_command": "/usr/bin/scalac {src_path} -d {exe_dir} -encoding UTF8 -language:postfixOps"
