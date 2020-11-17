@@ -150,6 +150,7 @@ class ContestRankAPI(APIView):
             if not qs:
                 qs = self.get_rank()
                 cache.set(cache_key, qs)
+            qs = qs.exclude(user__userprofile__real_name__startswith='-')
 
         if download_csv:
             self.realrank_filter(qs)
